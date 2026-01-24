@@ -1,0 +1,323 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+    --font-sans: 'Inter', sans-serif;
+    --font-serif: 'Playfair Display', serif;
+    --font-handwriting: 'Caveat', cursive;
+
+    --color-slate-50: #f8fafc;
+    --color-slate-100: #f1f5f9;
+    --color-slate-200: #e2e8f0;
+    --color-slate-300: #cbd5e1;
+    --color-slate-400: #94a3b8;
+    --color-slate-500: #64748b;
+    --color-slate-600: #475569;
+    --color-slate-700: #334155;
+    --color-slate-800: #1e293b;
+    --color-slate-900: #0f172a;
+    --color-slate-950: #020617;
+
+    --color-blue-300: #7dd3fc;
+    --color-blue-400: #60a5fa;
+    --color-blue-500: #3b82f6;
+    --color-blue-600: #2563eb;
+
+    --color-purple-400: #a78bfa;
+    --color-purple-500: #8b5cf6;
+    --color-purple-600: #7c3aed;
+
+    --color-pink-400: #f472b6;
+    --color-pink-500: #ec4899;
+
+    --color-rose-400: #fb7185;
+    --color-rose-500: #f43f5e;
+    --color-rose-600: #e11d48;
+    --color-rose-900: #881337;
+
+    --color-indigo-900: #312e81;
+
+    --color-orange-400: #fb923c;
+    --color-orange-500: #f97316;
+
+    --color-emerald-300: #6ee7b7;
+    --color-emerald-400: #34d399;
+    --color-emerald-800: #065f46;
+    --color-emerald-900: #064e3b;
+
+    --color-green-400: #4ade80;
+    --color-green-500: #22c55e;
+
+    --color-red-200: #fecaca;
+    --color-red-400: #f87171;
+    --color-red-500: #ef4444;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+}
+
+:root {
+    --bg-primary: var(--color-slate-950);
+    --text-primary: var(--color-slate-200);
+    --glass-bg: rgba(15, 23, 42, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+
+    /* Shared Component Compatibility */
+    --background: var(--bg-primary);
+    --foreground: var(--text-primary);
+    --primary: var(--color-blue-400);
+    --muted: var(--color-slate-500);
+    --border: var(--glass-border);
+}
+
+.light {
+    --bg-primary: var(--color-slate-50);
+    --text-primary: var(--color-slate-900);
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+@media (max-width: 640px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* ========================================
+   Glassmorphism Utilities
+   ======================================== */
+
+.glass-panel {
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-card {
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.glass-button {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+}
+
+.glass-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.glass-input {
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-input:focus {
+    border-color: rgba(96, 165, 250, 0.5);
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+/* ========================================
+   Shadcn Animation Classes
+   ======================================== */
+
+@keyframes animate-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes animate-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes zoom-in {
+    from {
+        transform: scale(0.95);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes zoom-out {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(0.95);
+    }
+}
+
+@keyframes slide-in-from-top {
+    from {
+        transform: translateY(-100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-in-from-bottom {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-in-from-left {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-in-from-right {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.animate-in {
+    animation: animate-in 0.3s ease-out forwards;
+}
+
+.animate-out {
+    animation: animate-out 0.2s ease-in forwards;
+}
+
+[data-state="open"] {
+    animation: fade-in 0.2s ease-out, zoom-in 0.2s ease-out;
+}
+
+[data-state="closed"] {
+    animation: fade-out 0.15s ease-in, zoom-out 0.15s ease-in;
+}
+
+/* ========================================
+   Spring Physics Easing
+   ======================================== */
+
+.ease-spring {
+    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.ease-premium {
+    transition-timing-function: cubic-bezier(0.21, 0.47, 0.32, 0.98);
+}
+
+/* ========================================
+   Typography Utilities
+   ======================================== */
+
+.font-handwriting {
+    font-family: var(--font-handwriting, 'Caveat'), cursive;
+}
+
+/* ========================================
+   Gradient Utilities
+   ======================================== */
+
+.gradient-text {
+    background: linear-gradient(to right, var(--color-blue-200, #bfdbfe), var(--color-purple-200, #ddd6fe));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.gradient-primary {
+    background: linear-gradient(135deg, var(--color-blue-600, #2563eb), var(--color-purple-600, #7c3aed));
+}
+
+/* ========================================
+   Focus Ring Utilities
+   ======================================== */
+
+.focus-ring {
+    outline: none;
+}
+
+.focus-ring:focus-visible {
+    box-shadow: 0 0 0 2px var(--color-slate-950), 0 0 0 4px var(--color-blue-500);
+}
