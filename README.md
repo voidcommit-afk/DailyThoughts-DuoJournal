@@ -1,29 +1,24 @@
-# Production App - Multi-User Daily Journal
+# DailyThoughts (Concierge Edition)
 
-This is the production-ready multi-user version of the Daily Journal app, built with Supabase for authentication and database.
+A high-touch, invite-only journaling platform designed for verified clients. This application operates as a concierge Micro-SaaS, ensuring privacy and exclusivity through a personal onboarding process.
 
-## Setup
+## Access Model
+**This application is not open to the public.** 
+- **Signups**: Disabled globally.
+- **Onboarding**: Clients are personally invited and onboarded by the administration.
+- **Security**: Access is strictly enforced via database whitelisting and direct invite links.
 
-1. Create a Supabase project at [supabase.com](https://supabase.com)
-2. Copy `.env.local.template` to `.env.local` and fill in your Supabase credentials
-3. Run database migrations (see `/supabase/migrations/`)
-4. Install dependencies: `npm install` (from root)
-5. Run dev server: `npm run dev:production` (from root)
+## Project Status
+- **Type**: Production / Private Instance
+- **Current Version**: Concierge Phase
+- **Infrastructure**: Next.js, Supabase (Auth & DB)
 
-## Architecture
+## Tech Stack
+- **Framework**: Next.js (React)
+- **Language**: TypeScript
+- **Database & Auth**: Supabase
+- **Styling**: Tailwind CSS
+- **Deployment**: Vercel
 
-- **Auth**: Supabase Auth with email/password
-- **Database**: Supabase PostgreSQL with Row Level Security (RLS)
-- **Shared Code**: Uses `@daily-journal/core` for UI components and business logic
-
-## Development
-
-```bash
-# From root directory
-npm run dev:production
-
-# Or from this directory
-npm run dev
-```
-
-The app will run on http://localhost:3001 (port 3001 to avoid conflicts with private-app on 3000).
+## Deployment Info
+This project is configured for manual client onboarding.

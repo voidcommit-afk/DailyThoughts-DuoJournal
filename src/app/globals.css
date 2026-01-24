@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 @theme {
-    --font-sans: 'Inter', sans-serif;
+    --font-sans: 'Inter', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif;
     --font-serif: 'Playfair Display', serif;
     --font-handwriting: 'Caveat', cursive;
 
@@ -56,6 +56,17 @@
     --color-red-400: #f87171;
     --color-red-500: #ef4444;
     --color-red-900: #7f1d1d;
+
+    /* Ocean Theme Colors */
+    --color-cyan-400: #22d3ee;
+    --color-cyan-500: #06b6d4;
+    --color-sky-400: #38bdf8;
+    --color-sky-500: #0ea5e9;
+
+    /* Monochrome Theme Colors */
+    --color-zinc-400: #a1a1aa;
+    --color-zinc-500: #71717a;
+    --color-zinc-900: #18181b;
 }
 
 * {
@@ -197,6 +208,20 @@ body {
 .glass-input:focus {
     border-color: rgba(96, 165, 250, 0.5);
     box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+.glass-split-bg {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.text-gradient {
+    background: linear-gradient(to right, #34d399, #f472b6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 /* ========================================
