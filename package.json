@@ -10,7 +10,7 @@
         "test": "vitest"
     },
     "dependencies": {
-        "@daily-journal/core": "*",
+        "lucide-react": "^0.473.0",
         "@fortawesome/fontawesome-svg-core": "^7.1.0",
         "@fortawesome/free-brands-svg-icons": "^7.1.0",
         "@fortawesome/free-solid-svg-icons": "^7.1.0",
@@ -34,6 +34,7 @@
         "react-dom": "19.2.3",
         "react-markdown": "^10.1.0",
         "remark-gfm": "^4.0.1",
+        "react-image-crop": "^11.0.5",
         "tailwind-merge": "^3.4.0"
     },
     "devDependencies": {

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Inter, Playfair_Display, Outfit, Roboto, Caveat } from 'next/font/google';
 import './globals.css';
 import BottomNav from '@/components/BottomNav';
-import { ThemeProvider } from '@daily-journal/core';
+import { ThemeProvider } from '@/core';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });

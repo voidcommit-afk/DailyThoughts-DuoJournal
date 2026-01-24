@@ -1,6 +1,6 @@
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
-import type { EntryRepository, Entry, EntryFilters } from '@daily-journal/core';
+import type { EntryRepository, Entry, EntryFilters } from '@/core';
 
 export class SupabaseEntryRepository implements EntryRepository {
     private async getClient() {

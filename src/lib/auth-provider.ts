@@ -1,6 +1,6 @@
 import { createSupabaseClient } from './supabase/client';
 import { createSupabaseServerClient } from './supabase/server';
-import type { AuthProvider, User, Credentials } from '@daily-journal/core';
+import type { AuthProvider, User, Credentials } from '@/core';
 import type { Database } from './database.types';
 import type { SupabaseClient } from '@supabase/supabase-js';
 

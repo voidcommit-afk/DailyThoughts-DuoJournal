@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { EmojiPicker, ProfileEditor, ThemeSelector, FontSelector, useTheme } from '@daily-journal/core';
+import { EmojiPicker, ProfileEditor, ThemeSelector, FontSelector, useTheme } from '@/core';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
