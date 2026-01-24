@@ -37,3 +37,4 @@ next-env.d.ts
 
 # Agent artifacts
 .agent/
+.vscode/

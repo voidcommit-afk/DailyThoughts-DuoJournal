@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document defines the exact database schema for the Daily Journal production app, including all tables, constraints, RLS policies, and triggers.
+This document defines the exact database schema for the DailyThoughts production app, including all tables, constraints, RLS policies, and triggers.
 
 ---
 
