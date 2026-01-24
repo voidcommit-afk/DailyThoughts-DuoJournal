@@ -259,24 +259,3 @@ interface Entry {
 ✅ All policies use server-side checks (`auth.uid()`)  
 ✅ Idempotent trigger functions  
 
-### What to Avoid
-
-❌ Never trust client-side filtering  
-❌ Never allow client to INSERT/DELETE users directly  
-❌ Never expose service role key to client  
-❌ Never skip RLS in application code  
-
----
-
-## Verification Checklist
-
-Before deploying to production:
-
-- [ ] Run `verify-schema.sql` to validate structure
-- [ ] Verify all RLS policies are active
-- [ ] Test cross-user access attempts (should fail)
-- [ ] Test partner access (should succeed for SELECT only)
-- [ ] Create test auth user, verify profile auto-created
-- [ ] Verify `email` is NOT in `public.users` table
-- [ ] Verify `cover_photo` is removed
-- [ ] Verify all NOT NULL constraints are enforced
