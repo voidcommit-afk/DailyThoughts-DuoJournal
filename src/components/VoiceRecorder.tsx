@@ -140,45 +140,50 @@ export default function VoiceRecorder({
             {audioNotes.length < maxNotes && !disabled && (
                 <div className="mb-3">
                     {isRecording ? (
-                        <div className="flex items-center gap-3 p-3 bg-red-900/20 border border-red-500/50 rounded-lg">
+                        <div className="flex items-center gap-4 p-4 bg-primary/10 border border-primary/20 rounded-2xl w-full">
                             <button
                                 type="button"
                                 onClick={stopRecording}
-                                className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors animate-pulse"
+                                className="w-14 h-14 bg-primary rounded-full flex items-center justify-center hover:bg-primary/90 transition-all scale-105 shadow-[0_0_20px_rgba(var(--primary),0.3)] animate-pulse"
                                 aria-label="Stop recording"
                             >
-                                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-6 h-6 text-slate-950" fill="currentColor" viewBox="0 0 24 24">
                                     <rect x="6" y="6" width="12" height="12" rx="2" />
                                 </svg>
                             </button>
-                            <div>
+                            <div className="flex flex-col items-start text-left">
                                 <div className="flex items-center gap-2">
-                                    <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                                    <span className="text-red-400 font-medium">Recording...</span>
+                                    <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                                    <span className="text-primary font-bold uppercase tracking-widest text-[10px]">Recording...</span>
                                 </div>
-                                <span className="text-sm text-[var(--muted)]">{formatTime(recordingTime)}</span>
+                                <span className="text-xl font-mono text-white leading-none">{formatTime(recordingTime)}</span>
                             </div>
                         </div>
                     ) : uploading ? (
-                        <div className="flex items-center gap-3 p-3 bg-[var(--card)] border border-[var(--border)] rounded-lg">
-                            <div className="w-12 h-12 flex items-center justify-center">
-                                <div className="w-6 h-6 border-2 border-[var(--primary)]/30 border-t-[var(--primary)] rounded-full animate-spin" />
+                        <div className="flex items-center gap-4 p-4 bg-slate-900/40 border border-white/5 rounded-2xl w-full">
+                            <div className="w-14 h-14 flex items-center justify-center">
+                                <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
                             </div>
-                            <span className="text-[var(--muted)]">Saving voice note...</span>
+                            <span className="text-slate-400 text-sm font-medium">Processing your voice note...</span>
                         </div>
                     ) : (
                         <button
                             type="button"
                             onClick={startRecording}
-                            className="flex items-center gap-3 p-3 w-full bg-[var(--card)] border border-[var(--border)] rounded-lg hover:border-[var(--primary)] transition-colors"
+                            className="flex items-center gap-4 p-4 w-full bg-slate-900/40 border border-white/5 rounded-2xl hover:border-primary/30 transition-all group"
                         >
-                            <div className="w-12 h-12 bg-[var(--primary)] rounded-full flex items-center justify-center">
-                                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <div className="w-14 h-14 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                                <svg className="w-7 h-7 text-primary" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
                                     <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
                                 </svg>
                             </div>
-                            <span className="text-[var(--foreground)]">Tap to record a voice note</span>
+                            <div className="flex flex-col items-start text-left">
+                                <span className="text-slate-300 font-medium text-lg leading-tight">Tap to record a voice note</span>
+                                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                                    Voice Memo (0/1)
+                                </span>
+                            </div>
                         </button>
                     )}
                 </div>

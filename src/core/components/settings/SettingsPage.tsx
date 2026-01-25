@@ -79,7 +79,8 @@ export default function SettingsPage() {
             }
         }
         fetchSettings();
-    }, [router, theme]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [router]);
 
     // Save profile & account settings
     const handleSaveProfile = async () => {
@@ -149,6 +150,27 @@ export default function SettingsPage() {
         );
     }
 
+    // Auto-save theme settings when they change
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            theme.saveSettings();
+        }, 1000); // Debounce for 1 second
+
+        return () => clearTimeout(timer);
+        // We only want to save when the actual values change
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        theme.currentTheme,
+        theme.primaryColor,
+        theme.accentColor,
+        theme.backgroundColor,
+        theme.fontFamily,
+        theme.fontSize,
+        theme.backgroundType,
+        theme.backgroundValue,
+        theme.backgroundBlur
+    ]);
+
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -170,22 +192,34 @@ export default function SettingsPage() {
                         <h1 className="text-xl font-bold">Settings</h1>
                     </div>
 
-                    <motion.button
-                        onClick={handleSaveProfile}
-                        disabled={saving}
-                        className="btn btn-primary"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                    >
-                        {saving ? (
-                            <span className="flex items-center gap-2">
-                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                Saving...
-                            </span>
-                        ) : (
-                            'Save Changes'
+                    <div className="flex items-center gap-4">
+                        {/* Only show Save button for Profile and Account tabs */}
+                        {(activeTab === 'profile' || activeTab === 'account') && (
+                            <motion.button
+                                onClick={handleSaveProfile}
+                                disabled={saving}
+                                className="btn btn-primary"
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                            >
+                                {saving ? (
+                                    <span className="flex items-center gap-2">
+                                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                        Saving...
+                                    </span>
+                                ) : (
+                                    'Save Changes'
+                                )}
+                            </motion.button>
                         )}
-                    </motion.button>
+
+                        {/* Automatic saving indicator for style tabs */}
+                        {(activeTab === 'appearance' || activeTab === 'typography') && (
+                            <span className="text-xs text-[var(--muted)] animate-pulse">
+                                Changes saved automatically
+                            </span>
+                        )}
+                    </div>
                 </div>
             </header>
 

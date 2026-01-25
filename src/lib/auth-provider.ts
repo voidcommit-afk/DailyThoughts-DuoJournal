@@ -41,6 +41,13 @@ export class SupabaseAuthProvider implements AuthProvider {
             return null;
         }
 
+        // Plan B: Concierge Approval Check
+        // If the user is authenticated but not yet approved by the concierge, we return null to treat them as logged out/unauthorized
+        // Note: You must add the 'is_approved' boolean column to your 'users' table in Supabase (default: true or false based on your preference)
+        if ((profile as any).is_approved === false) {
+            return null;
+        }
+
         return {
             id: user.id,
             email: user.email!,
@@ -51,6 +58,13 @@ export class SupabaseAuthProvider implements AuthProvider {
             theme: profile.theme,
             colorPreset: profile.color_preset,
             fontFamily: profile.font_family,
+            primaryColor: profile.primary_color,
+            accentColor: profile.accent_color,
+            backgroundColor: profile.background_color,
+            fontSize: profile.font_size,
+            backgroundType: profile.background_type,
+            backgroundValue: profile.background_value,
+            backgroundBlur: profile.background_blur,
         };
     }
 
@@ -91,16 +105,6 @@ export class SupabaseAuthProvider implements AuthProvider {
     }
 
     async updateProfile(userId: string, updates: Partial<User>): Promise<User> {
-        const updateData = {
-            display_name: updates.displayName,
-            emoji: updates.emoji,
-            partner_id: updates.partnerId ?? null,
-            partner_emoji: updates.partnerEmoji ?? null,
-            theme: updates.theme,
-            color_preset: updates.colorPreset,
-            font_family: updates.fontFamily,
-        };
-
         // Use different code paths for server vs client to avoid TypeScript inference issues
         if (typeof window === 'undefined') {
             // Server context
@@ -115,6 +119,13 @@ export class SupabaseAuthProvider implements AuthProvider {
                     ...(updates.theme !== undefined && { theme: updates.theme }),
                     ...(updates.colorPreset !== undefined && { color_preset: updates.colorPreset }),
                     ...(updates.fontFamily !== undefined && { font_family: updates.fontFamily }),
+                    ...(updates.primaryColor !== undefined && { primary_color: updates.primaryColor }),
+                    ...(updates.accentColor !== undefined && { accent_color: updates.accentColor }),
+                    ...(updates.backgroundColor !== undefined && { background_color: updates.backgroundColor }),
+                    ...(updates.fontSize !== undefined && { font_size: updates.fontSize }),
+                    ...(updates.backgroundType !== undefined && { background_type: updates.backgroundType }),
+                    ...(updates.backgroundValue !== undefined && { background_value: updates.backgroundValue }),
+                    ...(updates.backgroundBlur !== undefined && { background_blur: updates.backgroundBlur }),
                 })
                 .eq('id', userId)
                 .select()
@@ -139,6 +150,13 @@ export class SupabaseAuthProvider implements AuthProvider {
                 theme: data.theme,
                 colorPreset: data.color_preset,
                 fontFamily: data.font_family,
+                primaryColor: data.primary_color,
+                accentColor: data.accent_color,
+                backgroundColor: data.background_color,
+                fontSize: data.font_size,
+                backgroundType: data.background_type,
+                backgroundValue: data.background_value,
+                backgroundBlur: data.background_blur,
             };
         } else {
             // Client context
@@ -153,6 +171,13 @@ export class SupabaseAuthProvider implements AuthProvider {
                     ...(updates.theme !== undefined && { theme: updates.theme }),
                     ...(updates.colorPreset !== undefined && { color_preset: updates.colorPreset }),
                     ...(updates.fontFamily !== undefined && { font_family: updates.fontFamily }),
+                    ...(updates.primaryColor !== undefined && { primary_color: updates.primaryColor }),
+                    ...(updates.accentColor !== undefined && { accent_color: updates.accentColor }),
+                    ...(updates.backgroundColor !== undefined && { background_color: updates.backgroundColor }),
+                    ...(updates.fontSize !== undefined && { font_size: updates.fontSize }),
+                    ...(updates.backgroundType !== undefined && { background_type: updates.backgroundType }),
+                    ...(updates.backgroundValue !== undefined && { background_value: updates.backgroundValue }),
+                    ...(updates.backgroundBlur !== undefined && { background_blur: updates.backgroundBlur }),
                 })
                 .eq('id', userId)
                 .select()
@@ -177,6 +202,13 @@ export class SupabaseAuthProvider implements AuthProvider {
                 theme: data.theme,
                 colorPreset: data.color_preset,
                 fontFamily: data.font_family,
+                primaryColor: data.primary_color,
+                accentColor: data.accent_color,
+                backgroundColor: data.background_color,
+                fontSize: data.font_size,
+                backgroundType: data.background_type,
+                backgroundValue: data.background_value,
+                backgroundBlur: data.background_blur,
             };
         }
     }

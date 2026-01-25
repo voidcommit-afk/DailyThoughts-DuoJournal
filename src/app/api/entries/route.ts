@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json();
-        const { date, content, images, audioNotes } = body;
+        const { date, content, images, audioNotes, mood, weather } = body;
 
         if (!date || !content) {
             return NextResponse.json(
@@ -68,6 +68,8 @@ export async function POST(request: NextRequest) {
             content,
             images: images || [],
             audioNotes: audioNotes || [],
+            mood: mood || null,
+            weather: weather || null,
         });
 
         return NextResponse.json({ entry }, { status: 201 });

@@ -63,7 +63,7 @@ export class SupabaseEntryRepository implements EntryRepository {
         return this.mapToEntry(data);
     }
 
-    async createEntry(entry: Omit<Entry, 'id' | 'createdAt' | 'updatedAt'>): Promise<Entry> {
+    async createEntry(entry: Omit<Entry, 'id' | 'createdAt' | 'updatedAt'> & { mood?: string, weather?: string }): Promise<Entry> {
         const supabase: any = await this.getClient();
         const { data, error } = await supabase
             .from('entries')
@@ -73,6 +73,8 @@ export class SupabaseEntryRepository implements EntryRepository {
                 content: entry.content,
                 images: entry.images || [],
                 audio_notes: entry.audioNotes || [],
+                mood: entry.mood || null,
+                weather: entry.weather || null,
             })
             .select()
             .single();
@@ -167,7 +169,7 @@ export class SupabaseEntryRepository implements EntryRepository {
         return (data || []).map(this.mapToEntry);
     }
 
-    private mapToEntry(data: any): Entry {
+    private mapToEntry(data: any): Entry & { mood?: string, weather?: string } {
         return {
             id: data.id,
             userId: data.user_id,
@@ -175,6 +177,8 @@ export class SupabaseEntryRepository implements EntryRepository {
             content: data.content,
             images: Array.isArray(data.images) ? data.images : [],
             audioNotes: Array.isArray(data.audio_notes) ? data.audio_notes : [],
+            mood: data.mood,
+            weather: data.weather,
             createdAt: data.created_at,
             updatedAt: data.updated_at,
         };

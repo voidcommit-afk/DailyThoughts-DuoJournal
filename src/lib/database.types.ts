@@ -53,6 +53,13 @@ export interface Database {
                     partner_emoji: string | null
                     partner_id: string | null
                     theme: string
+                    primary_color: string | null
+                    accent_color: string | null
+                    background_color: string | null
+                    font_size: string | null
+                    background_type: string | null
+                    background_value: string | null
+                    background_blur: number | null
                 }
                 Insert: {
                     color_preset?: string
@@ -65,6 +72,13 @@ export interface Database {
                     partner_emoji?: string | null
                     partner_id?: string | null
                     theme?: string
+                    primary_color?: string | null
+                    accent_color?: string | null
+                    background_color?: string | null
+                    font_size?: string | null
+                    background_type?: string | null
+                    background_value?: string | null
+                    background_blur?: number | null
                 }
                 Update: {
                     color_preset?: string
@@ -77,6 +91,13 @@ export interface Database {
                     partner_emoji?: string | null
                     partner_id?: string | null
                     theme?: string
+                    primary_color?: string | null
+                    accent_color?: string | null
+                    background_color?: string | null
+                    font_size?: string | null
+                    background_type?: string | null
+                    background_value?: string | null
+                    background_blur?: number | null
                 }
             }
         }

@@ -24,7 +24,7 @@ export const THEMES: Record<string, Theme> = {
         primaryHover: '#6366f1',
         accent: '#6366f1',
         border: '#1E293B',
-        card: 'rgba(30, 41, 59, 0.6)',
+        card: '#1E293B', // Broken rgba fixed to hex
         muted: '#94a3b8',
     },
     sunset: {
@@ -35,7 +35,7 @@ export const THEMES: Record<string, Theme> = {
         primaryHover: '#EA580C',
         accent: '#FB923C',
         border: '#3D2D24',
-        card: 'rgba(61, 45, 36, 0.6)',
+        card: '#3D2D24', // Broken rgba fixed to hex
         muted: '#A8A29E',
     },
     forest: {
@@ -46,7 +46,7 @@ export const THEMES: Record<string, Theme> = {
         primaryHover: '#16A34A',
         accent: '#4ADE80',
         border: '#1E3A2F',
-        card: 'rgba(30, 58, 47, 0.6)',
+        card: '#1E3A2F', // Broken rgba fixed to hex
         muted: '#9CA3AF',
     },
     lavender: {
@@ -57,7 +57,7 @@ export const THEMES: Record<string, Theme> = {
         primaryHover: '#9333EA',
         accent: '#C084FC',
         border: '#2E2639',
-        card: 'rgba(46, 38, 57, 0.6)',
+        card: '#2E2639', // Broken rgba fixed to hex
         muted: '#A78BFA',
     },
     monochrome: {
@@ -68,7 +68,7 @@ export const THEMES: Record<string, Theme> = {
         primaryHover: '#71717A',
         accent: '#D4D4D8',
         border: '#27272A',
-        card: 'rgba(39, 39, 42, 0.6)',
+        card: '#27272A', // Broken rgba fixed to hex
         muted: '#71717A',
     },
     ocean: {
@@ -79,7 +79,7 @@ export const THEMES: Record<string, Theme> = {
         primaryHover: '#0284C7',
         accent: '#38BDF8',
         border: '#1E3A5F',
-        card: 'rgba(30, 58, 95, 0.6)',
+        card: '#1E3A5F', // Broken rgba fixed to hex
         muted: '#7DD3FC',
     },
 };
@@ -100,6 +100,10 @@ export const FONTS: Record<string, Font> = {
         name: 'Helvetica',
         family: "'Helvetica Neue', Helvetica, Arial, sans-serif",
         // System font - no Google Font needed
+    },
+    inter: {
+        name: 'Inter',
+        family: "'Inter', sans-serif",
     },
     roboto: {
         name: 'Roboto',
@@ -149,14 +153,47 @@ export function applyTheme(theme: Theme | string, customColors?: {
     const themeObj = typeof theme === 'string' ? THEMES[theme] || THEMES.midnight : theme;
     const root = document.documentElement;
 
-    root.style.setProperty('--background', customColors?.background || themeObj.background);
-    root.style.setProperty('--foreground', themeObj.foreground);
-    root.style.setProperty('--primary', customColors?.primary || themeObj.primary);
-    root.style.setProperty('--primary-hover', themeObj.primaryHover);
-    root.style.setProperty('--accent', customColors?.accent || themeObj.accent);
-    root.style.setProperty('--border', themeObj.border);
-    root.style.setProperty('--card', themeObj.card);
-    root.style.setProperty('--muted', themeObj.muted);
+    // Helper to convert Hex to HSL channels (e.g. "222.2 84% 4.9%")
+    const toHsl = (hex: string) => {
+        let c = hex.substring(1).split('');
+        if (c.length === 3) c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+        const cVal = parseInt(c.join(''), 16);
+        const r = (cVal >> 16) & 255;
+        const g = (cVal >> 8) & 255;
+        const b = cVal & 255;
+
+        const rNorm = r / 255, gNorm = g / 255, bNorm = b / 255;
+        const max = Math.max(rNorm, gNorm, bNorm), min = Math.min(rNorm, gNorm, bNorm);
+        let h = 0, s = 0, l = (max + min) / 2;
+
+        if (max !== min) {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case rNorm: h = (gNorm - bNorm) / d + (gNorm < bNorm ? 6 : 0); break;
+                case gNorm: h = (bNorm - rNorm) / d + 2; break;
+                case bNorm: h = (rNorm - gNorm) / d + 4; break;
+            }
+            h /= 6;
+        }
+
+        return `${(h * 360).toFixed(1)} ${(s * 100).toFixed(1)}% ${(l * 100).toFixed(1)}%`;
+    };
+
+    // Apply HSL values for Tailwind/Shadcn compatibility
+    root.style.setProperty('--background', toHsl(customColors?.background || themeObj.background));
+    root.style.setProperty('--foreground', toHsl(themeObj.foreground));
+    root.style.setProperty('--primary', toHsl(customColors?.primary || themeObj.primary));
+    root.style.setProperty('--primary-hover', toHsl(themeObj.primaryHover));
+    root.style.setProperty('--accent', toHsl(customColors?.accent || themeObj.accent));
+    root.style.setProperty('--border', toHsl(themeObj.border));
+    root.style.setProperty('--card', toHsl(themeObj.card.startsWith('#') ? themeObj.card : '#1e293b'));
+    root.style.setProperty('--muted', toHsl(themeObj.muted));
+
+    // Also set raw hex for components using var(--color-xxx) if needed, but globals uses HSL
+    // If globals.css has background-color: hsl(var(--background)), we must provide channels.
+    // If we want to support direct hex usage too, we'd need different vars.
+    // For now, this fixes the "theme color change doesn't take effect" issue.
 }
 
 /**
@@ -169,7 +206,15 @@ export function applyFont(fontFamily: string, fontSize: string) {
     const size = FONT_SIZES[fontSize] || FONT_SIZES.medium;
     const root = document.documentElement;
 
+    // Set the data-font attribute for our "Atomic Overrides" in CSS
+    root.setAttribute('data-font', fontFamily);
+
+    // Legacy sync (still useful for components using the variables)
     root.style.setProperty('--font-family', font.family);
+    root.style.setProperty('--font-sans', font.family);
+    root.style.setProperty('--font-serif', font.family);
+    root.style.setProperty('--font-handwriting', font.family);
+
     root.style.setProperty('--font-scale', String(size.scale));
     root.style.setProperty('--base-font-size', size.baseSize);
     document.body.style.fontFamily = font.family;

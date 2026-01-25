@@ -17,8 +17,16 @@ export default function SettingsPage() {
     const [dailyGoal, setDailyGoal] = useState(500);
     const [activeSection, setActiveSection] = useState<'profile' | 'appearance' | 'account'>('profile');
 
-    const { saveSettings } = useTheme();
+    const { saveSettings, loadUserSettings, currentTheme, fontFamily, fontSize, primaryColor, accentColor, backgroundColor, backgroundType, backgroundValue, backgroundBlur } = useTheme();
     const router = useRouter();
+
+    // Auto-save appearance settings when they change
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            saveSettings();
+        }, 1000); // 1s debounce
+        return () => clearTimeout(timer);
+    }, [currentTheme, fontFamily, fontSize, primaryColor, accentColor, backgroundColor, backgroundType, backgroundValue, backgroundBlur, saveSettings]);
 
     // Fetch user data
     useEffect(() => {
@@ -28,6 +36,8 @@ export default function SettingsPage() {
                 const data = await res.json();
                 if (data.user) {
                     setUser(data.user);
+                    // Initialize ThemeProvider so it knows the userId for saving
+                    loadUserSettings(data.user);
                     setDisplayName(data.user.display_name || '');
                     setEmoji(data.user.emoji || '😊');
                 }
@@ -123,13 +133,15 @@ export default function SettingsPage() {
                                     setDailyGoal={setDailyGoal}
                                 />
                                 <div className="flex justify-end pt-6">
-                                    <Button
-                                        onClick={() => handleSave({ display_name: displayName, emoji })}
-                                        disabled={isSaving}
-                                        size="lg"
-                                    >
-                                        {isSaving ? 'Saving...' : 'Save Profile'}
-                                    </Button>
+                                    {activeSection === 'profile' && (
+                                        <Button
+                                            onClick={() => handleSave({ display_name: displayName, emoji })}
+                                            disabled={isSaving}
+                                            size="lg"
+                                        >
+                                            {isSaving ? 'Saving...' : 'Save Profile'}
+                                        </Button>
+                                    )}
                                 </div>
                             </div>
                         </motion.div>
@@ -146,23 +158,16 @@ export default function SettingsPage() {
                             className="space-y-6"
                         >
                             <div className="glass-panel rounded-[24px] p-6">
-                                <h2 className="text-lg font-bold text-white mb-6">Theme</h2>
+                                <div className="flex justify-between items-center mb-6">
+                                    <h2 className="text-lg font-bold text-white">Theme</h2>
+                                    <span className="text-[10px] text-slate-400 uppercase tracking-widest animate-pulse">Changes saved automatically</span>
+                                </div>
                                 <ThemeSelector />
                             </div>
 
                             <div className="glass-panel rounded-[24px] p-6">
                                 <h2 className="text-lg font-bold text-white mb-6">Typography</h2>
                                 <FontSelector />
-                            </div>
-
-                            <div className="flex justify-end">
-                                <Button
-                                    onClick={() => saveSettings()}
-                                    disabled={isSaving}
-                                    size="lg"
-                                >
-                                    Save Appearance
-                                </Button>
                             </div>
                         </motion.div>
                     )}

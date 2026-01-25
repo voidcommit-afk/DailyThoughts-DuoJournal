@@ -228,36 +228,7 @@ export default function LoginPage() {
                     </motion.div>
                 </form>
 
-                {/* Divider */}
-                <motion.div
-                    className="my-8 flex items-center gap-4"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.6 }}
-                >
-                    <div className="flex-1 h-px bg-slate-800" />
-                    <span className="text-xs text-slate-500 uppercase tracking-wider">or</span>
-                    <div className="flex-1 h-px bg-slate-800" />
-                </motion.div>
 
-                {/* Sign Up Link */}
-                <motion.div
-                    className="text-center"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.7 }}
-                >
-                    <p className="text-sm text-slate-400 mb-3">New to DailyThoughts?</p>
-                    <Link
-                        href="/auth/signup"
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/10 hover:bg-white/5 transition-all text-white font-medium"
-                    >
-                        <span>Create your private space</span>
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                        </svg>
-                    </Link>
-                </motion.div>
             </motion.div>
 
             {/* Trust Badge */}

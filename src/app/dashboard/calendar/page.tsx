@@ -35,8 +35,8 @@ export default function CalendarPage() {
 
     return (
         <>
-            <header className="flex-none sticky top-0 z-30 bg-slate-950/95 backdrop-blur-md px-6 py-4 border-b border-slate-800">
-                <h2 className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest">{formatDate()}</h2>
+            <header className="flex-none sticky top-0 z-30 bg-[var(--glass-bg)] backdrop-blur-md px-6 py-4 border-b border-[var(--glass-border)]">
+                <h2 className="text-[10px] sm:text-xs font-bold text-[var(--muted)] uppercase tracking-widest">{formatDate()}</h2>
                 <Link href="/dashboard" className="block focus:outline-none hover:opacity-80 transition-opacity">
                     <h1 className="font-serif text-2xl font-bold bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">DailyThoughts</h1>
                 </Link>
@@ -77,7 +77,7 @@ export default function CalendarPage() {
 
                     <div className="grid grid-cols-7 gap-3 mb-6">
                         {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, i) => (
-                            <div key={i} className="text-center text-[10px] font-bold text-slate-400 uppercase">{day}</div>
+                            <div key={i} className="text-center text-[10px] font-bold text-[var(--muted)] uppercase">{day}</div>
                         ))}
 
                         {days.map((day, i) => (

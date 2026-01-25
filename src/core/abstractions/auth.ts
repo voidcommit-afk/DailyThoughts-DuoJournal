@@ -8,8 +8,15 @@ export interface User {
     partnerId?: string | null;
     partnerEmoji?: string;
     theme: string; // NOT NULL in DB
-    colorPreset: string; // NOT NULL in DB
+    colorPreset?: string; // NOT NULL in DB
     fontFamily: string; // NOT NULL in DB
+    primaryColor?: string | null;
+    accentColor?: string | null;
+    backgroundColor?: string | null;
+    fontSize?: string | null;
+    backgroundType?: string | null;
+    backgroundValue?: string | null;
+    backgroundBlur?: number | null;
 }
 
 export interface Credentials {

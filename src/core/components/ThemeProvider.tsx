@@ -209,7 +209,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         }
     }, []);
 
-    const value: ThemeContextType = {
+    const value = React.useMemo<ThemeContextType>(() => ({
         currentTheme,
         setTheme: handleSetTheme,
         primaryColor,
@@ -232,7 +232,13 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         loadUserSettings,
         saveSettings,
         resetToDefaults,
-    };
+    }), [
+        currentTheme, handleSetTheme,
+        primaryColor, accentColor, backgroundColor,
+        fontFamily, fontSize,
+        backgroundType, backgroundValue, backgroundBlur,
+        userId, loadUserSettings, saveSettings, resetToDefaults
+    ]);
 
     return (
         <ThemeContext.Provider value={value}>

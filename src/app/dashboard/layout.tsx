@@ -3,11 +3,13 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useTheme } from '@/core';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState<any>(null);
     const router = useRouter();
+    const theme = useTheme();
 
     useEffect(() => {
         async function checkAuth() {
@@ -20,6 +22,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     return;
                 }
                 setUser(data.user);
+
+                // Load theme settings
+                if (data.user) {
+                    theme.loadUserSettings({
+                        id: data.user.id,
+                        name: data.user.name,
+                        display_name: data.user.displayName, // API returns displayName
+                        emoji: data.user.emoji,
+                        username: data.user.username,
+                        theme: data.user.theme,
+                        primary_color: data.user.primaryColor, // API returns primaryColor
+                        accent_color: data.user.accentColor,
+                        background_color: data.user.backgroundColor,
+                        font_family: data.user.fontFamily,
+                        font_size: data.user.fontSize,
+                        background_type: data.user.backgroundType,
+                        background_value: data.user.backgroundValue,
+                        background_blur: data.user.backgroundBlur,
+                    });
+                }
             } catch (err) {
                 console.error('Auth check failed:', err);
                 router.push('/login');
@@ -29,6 +51,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         }
 
         checkAuth();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router]);
 
     if (isLoading) {
@@ -46,8 +69,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
 
     return (
-        <div className="min-h-screen bg-slate-950 text-slate-200 font-sans flex flex-col lg:flex-row overflow-hidden touch-manipulation">
-            <aside className="hidden lg:flex flex-col w-64 h-screen border-r border-slate-800 bg-slate-900/50 backdrop-blur-md z-50 sticky top-0 overflow-y-auto">
+        <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] font-sans flex flex-col lg:flex-row overflow-hidden touch-manipulation">
+            <aside className="hidden lg:flex flex-col w-64 h-screen border-r border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-md z-50 sticky top-0 overflow-y-auto">
                 <div className="p-8">
                     <h1 className="font-serif text-2xl font-bold tracking-tight">
                         Daily<span className="text-rose-400">Thoughts</span>.
@@ -55,40 +78,36 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </div>
 
                 <nav className="flex-1 px-4 space-y-2">
-                    <NavButton href="/dashboard" icon="journal">My Journal</NavButton>
-                    <NavButton href="/dashboard/partner" icon="partner" emoji={user?.partner_emoji || '🪐'}>
-                        {user?.partner_id ? 'Partner' : 'Invite'}
-                    </NavButton>
-                    <NavButton href="/dashboard/calendar" icon="calendar">Memories</NavButton>
+                    <NavButton href="/dashboard" icon="journal">Today's Entry</NavButton>
+                    <NavButton href="/dashboard/partner" icon="partner">Partner Space</NavButton>
+                    <NavButton href="/dashboard/calendar" icon="calendar">Calendar</NavButton>
                     <NavButton href="/dashboard/settings" icon="settings">Settings</NavButton>
                 </nav>
 
-                <div className="p-6 border-t border-slate-800">
+                <div className="p-6 border-t border-[var(--glass-border)]">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-slate-700 border-2 border-slate-600 flex items-center justify-center text-xl">
+                        <div className="w-10 h-10 rounded-full bg-[var(--glass-bg)] border-2 border-[var(--glass-border)] flex items-center justify-center text-xl">
                             {user?.emoji || '😊'}
                         </div>
                         <div className="text-sm">
-                            <p className="font-bold text-white">{user?.display_name || 'User'}</p>
-                            <p className="text-xs text-slate-400 font-medium">
-                                {user?.partner_id ? 'Coupled' : 'Solo Journey'}
+                            <p className="font-bold text-[var(--text-primary)]">{user?.display_name || 'User'}</p>
+                            <p className="text-xs text-[var(--muted)] font-medium">
+                                {user?.partner_id ? 'Coupled' : 'Private Journal'}
                             </p>
                         </div>
                     </div>
                 </div>
             </aside>
 
-            <main className="flex-1 flex flex-col h-screen overflow-hidden">
+            <main className="flex-1 flex flex-col h-screen overflow-y-auto overflow-x-hidden relative">
                 {children}
             </main>
 
-            <nav className="lg:hidden fixed bottom-0 left-0 w-full bg-slate-900/90 backdrop-blur-xl border-t border-slate-800 z-50 safe-area-inset-bottom">
+            <nav className="lg:hidden fixed bottom-0 left-0 w-full bg-[var(--glass-bg)] backdrop-blur-xl border-t border-[var(--glass-border)] z-50 safe-area-inset-bottom">
                 <div className="flex justify-around items-center h-16 px-2 pb-safe">
-                    <MobileNavButton href="/dashboard" icon="journal">Journal</MobileNavButton>
-                    <MobileNavButton href="/dashboard/partner" icon="partner">
-                        {user?.partner_id ? 'Partner' : 'Invite'}
-                    </MobileNavButton>
-                    <MobileNavButton href="/dashboard/calendar" icon="calendar">Memories</MobileNavButton>
+                    <MobileNavButton href="/dashboard" icon="journal">Today</MobileNavButton>
+                    <MobileNavButton href="/dashboard/partner" icon="partner">Partner</MobileNavButton>
+                    <MobileNavButton href="/dashboard/calendar" icon="calendar">Calendar</MobileNavButton>
                     <MobileNavButton href="/dashboard/settings" icon="settings">Settings</MobileNavButton>
                 </div>
             </nav>
