@@ -97,7 +97,7 @@ export default function PartnerPage() {
                         {/* Partner Profile Card */}
                         <div className="glass-panel p-6 rounded-[24px] flex items-center gap-4 border border-rose-500/20 bg-rose-500/5">
                             <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center text-3xl shadow-lg border border-white/5">
-                                {user.partner_emoji || '💫'}
+                                {user.partnerEmoji || '💫'}
                             </div>
                             <div>
                                 <h2 className="text-xl font-bold text-white">Your Partner</h2>

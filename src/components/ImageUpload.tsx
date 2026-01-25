@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ImageLightbox from './ImageLightbox';
 
 interface ImageUploadProps {
     images: string[];
@@ -18,6 +19,10 @@ export default function ImageUpload({
 }: ImageUploadProps) {
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState('');
+    const [lightbox, setLightbox] = useState<{ isOpen: boolean; index: number }>({
+        isOpen: false,
+        index: 0
+    });
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,10 +86,11 @@ export default function ImageUpload({
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.8 }}
-                                className="relative w-20 h-20 rounded-xl overflow-hidden group border border-slate-800"
+                                onClick={() => setLightbox({ isOpen: true, index })}
+                                className="relative w-20 h-20 rounded-xl overflow-hidden group border border-slate-800 cursor-pointer"
                             >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={url} alt={`Upload ${index}`} className="w-full h-full object-cover" />
+                                <img src={url} alt={`Upload ${index}`} className="w-full h-full object-cover transition-transform group-hover:scale-110" />
                                 <button
                                     onClick={() => removeImage(index)}
                                     className="absolute top-1 right-1 p-1 bg-black/60 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
@@ -134,6 +140,13 @@ export default function ImageUpload({
                 accept="image/*"
                 className="hidden"
                 onChange={handleFileChange}
+            />
+
+            <ImageLightbox
+                isOpen={lightbox.isOpen}
+                images={images}
+                initialIndex={lightbox.index}
+                onClose={() => setLightbox(prev => ({ ...prev, isOpen: false }))}
             />
         </div>
     );

@@ -23,6 +23,7 @@ export default function EntryPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+    const [lastSavedTime, setLastSavedTime] = useState<string | null>(null);
     const [isSaved, setIsSaved] = useState(false);
 
     const editorRef = useRef<HTMLDivElement>(null);
@@ -114,6 +115,12 @@ export default function EntryPage() {
         // If data hasn't changed since last save, skip
         if (dataStr === lastSavedData.current) return;
 
+        // Skip auto-save if content is empty (API requires content)
+        if (!content.trim()) {
+            setSaveStatus('idle');
+            return;
+        }
+
         // Clear existing timeout
         if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
 
@@ -135,6 +142,7 @@ export default function EntryPage() {
                 if (res.ok) {
                     lastSavedData.current = dataStr;
                     setSaveStatus('saved');
+                    setLastSavedTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
                     // Remove backup on successful save
                     localStorage.removeItem(`entry_backup_${params.date}`);
                     setTimeout(() => setSaveStatus('idle'), 3000);
@@ -205,9 +213,14 @@ export default function EntryPage() {
                     <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">{dayName}</p>
                 </div>
 
-                <div className="flex items-center gap-2 min-w-[60px] justify-end">
+                <div className="flex items-center gap-2 min-w-[80px] justify-end">
                     {saveStatus === 'saving' && <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest animate-pulse">Saving...</span>}
-                    {saveStatus === 'saved' && <span className="text-[10px] font-bold text-primary uppercase tracking-widest">Saved</span>}
+                    {saveStatus === 'saved' && (
+                        <div className="flex flex-col items-end">
+                            <span className="text-[10px] font-bold text-primary uppercase tracking-widest leading-none">✓ Saved</span>
+                            {lastSavedTime && <span className="text-[8px] text-slate-500 font-medium tracking-tight mt-0.5 whitespace-nowrap">Local Sync: {lastSavedTime}</span>}
+                        </div>
+                    )}
                     {saveStatus === 'error' && <span className="text-[10px] font-bold text-red-400 uppercase tracking-widest">Sync Error</span>}
                 </div>
             </header>

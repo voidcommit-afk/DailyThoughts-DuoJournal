@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { toast } from 'sonner';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -35,10 +36,13 @@ export default function LoginPage() {
                 throw new Error(data.error || 'Sign in failed');
             }
 
+            toast.success('Welcome back!');
             router.push('/dashboard');
             router.refresh();
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Sign in failed');
+            const msg = err instanceof Error ? err.message : 'Sign in failed';
+            setError(msg);
+            toast.error(msg);
         } finally {
             setLoading(false);
         }

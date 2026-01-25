@@ -48,13 +48,27 @@ export class SupabaseAuthProvider implements AuthProvider {
             return null;
         }
 
+        // Fetch partner's emoji if partner_id exists
+        let partnerEmoji = profile.partner_emoji;
+        if (profile.partner_id) {
+            const { data: partner } = await supabase
+                .from('users')
+                .select('emoji')
+                .eq('id', profile.partner_id)
+                .single<{ emoji: string }>();
+
+            if (partner) {
+                partnerEmoji = partner.emoji;
+            }
+        }
+
         return {
             id: user.id,
             email: user.email!,
             displayName: profile.display_name,
             emoji: profile.emoji,
             partnerId: profile.partner_id ?? undefined,
-            partnerEmoji: profile.partner_emoji ?? undefined,
+            partnerEmoji: partnerEmoji ?? undefined,
             theme: profile.theme,
             colorPreset: profile.color_preset,
             fontFamily: profile.font_family,

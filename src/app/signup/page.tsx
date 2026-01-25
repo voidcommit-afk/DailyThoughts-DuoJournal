@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
 
 function FadeIn({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
     return (
@@ -29,11 +30,25 @@ export default function SignupPage() {
         e.preventDefault();
         setLoading(true);
 
-        // Simulating the concierge request process
-        setTimeout(() => {
+        try {
+            const res = await fetch('/api/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email }),
+            });
+
+            if (!res.ok) {
+                const data = await res.json();
+                throw new Error(data.error || 'Failed to submit request');
+            }
+
             setIsSubmitted(true);
+            toast.success("Request sent to the Concierge.");
+        } catch (err) {
+            toast.error(err instanceof Error ? err.message : 'Something went wrong');
+        } finally {
             setLoading(false);
-        }, 1500);
+        }
     };
 
     return (
@@ -111,14 +126,6 @@ export default function SignupPage() {
                                     {loading ? 'Requesting...' : 'Submit Interest'}
                                 </button>
                             </form>
-
-                            <div className="pt-8 border-t border-white/5 text-center">
-                                <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] mb-4">Direct Inquiry</p>
-                                <p className="text-slate-400 text-sm font-light">
-                                    Contact Project Owner: <br />
-                                    <a href="mailto:sanjeevkumar61700@gmail.com" className="text-[#D4AF37] hover:underline">sanjeevkumar61700@gmail.com</a>
-                                </p>
-                            </div>
                         </motion.div>
                     ) : (
                         <motion.div

@@ -11,8 +11,33 @@ const roboto = Roboto({ weight: ['400', '500', '700'], subsets: ['latin'], varia
 const caveat = Caveat({ subsets: ['latin'], variable: '--font-next-handwriting' });
 
 export const metadata: Metadata = {
-    title: 'DailyThoughts',
-    description: 'A private journal to write your truth. Share it with a partner to build intimacy, or keep it solo for deep reflection. No likes. No comments. Just presence.',
+    title: 'DailyThoughts | Your Private Shared Sanctuary',
+    description: 'A human-first sanctuary created for the mindful writer. No noise. No ads. Just heart. Build intimacy with a partner or reflect in deep solitude.',
+    keywords: ['journaling', 'intimacy', 'private thoughts', 'couples journal', 'mindfulness', 'reflection'],
+    authors: [{ name: 'DailyThoughts Sanctuary' }],
+    metadataBase: new URL('https://dailythoughts.app'), // Placeholder production URL
+    openGraph: {
+        title: 'DailyThoughts | Your Private Shared Sanctuary',
+        description: 'A private space for your truth. No likes, no noise, just presence.',
+        type: 'website',
+        url: 'https://dailythoughts.app',
+        siteName: 'DailyThoughts',
+        images: [
+            {
+                url: '/sanctuary-preview.jpg',
+                width: 1200,
+                height: 630,
+                alt: 'DailyThoughts Sanctuary Preview',
+            },
+        ],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'DailyThoughts | Your Private Shared Sanctuary',
+        description: 'Quietly yours. A sacred space for your story.',
+        images: ['/sanctuary-preview.jpg'],
+    },
+    themeColor: '#0A0F1E',
 };
 
 export const viewport = {
@@ -21,6 +46,8 @@ export const viewport = {
     maximumScale: 1,
     userScalable: false,
 };
+
+import { Toaster } from 'sonner';
 
 export default function RootLayout({
     children,
@@ -44,6 +71,7 @@ export default function RootLayout({
                 <ThemeProvider>
                     {children}
                     <BottomNav />
+                    <Toaster position="top-center" expand={false} richColors />
                 </ThemeProvider>
             </body>
         </html>

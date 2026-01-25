@@ -98,7 +98,7 @@ export default function LandingPage() {
                         <div className="flex flex-col items-center gap-8">
                             <Link
                                 href="/signup"
-                                className="w-full sm:w-auto px-12 py-6 bg-white text-slate-950 rounded-2xl font-black uppercase tracking-[0.2em] text-lg hover:bg-[#E0E0E0] transition-all shadow-xl hover:scale-[1.02] active:scale-95"
+                                className="w-full sm:w-auto px-12 py-6 bg-[#D4AF37] text-[#0A0F1E] rounded-2xl font-black uppercase tracking-[0.2em] text-lg hover:bg-[#C4A030] transition-all shadow-[0_0_30px_rgba(212,175,55,0.2)] hover:scale-[1.02] active:scale-95"
                             >
                                 Begin Your Story
                             </Link>

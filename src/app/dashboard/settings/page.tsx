@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { toast } from 'sonner';
 
 export default function SettingsPage() {
     const [user, setUser] = useState<any>(null);
@@ -61,10 +62,12 @@ export default function SettingsPage() {
             if (data.user) {
                 setUser(data.user);
                 await saveSettings();
+                toast.success('Settings updated successfully');
                 router.refresh();
             }
         } catch (err) {
             console.error('Failed to save settings:', err);
+            toast.error('Failed to update settings');
         } finally {
             setIsSaving(false);
         }
@@ -230,9 +233,16 @@ export default function SettingsPage() {
                                     variant="destructive"
                                     className="w-full"
                                     onClick={async () => {
-                                        await fetch('/api/auth/signout', { method: 'POST' });
-                                        router.push('/');
-                                        router.refresh();
+                                        const promise = fetch('/api/auth/signout', { method: 'POST' });
+                                        toast.promise(promise, {
+                                            loading: 'Signing out...',
+                                            success: () => {
+                                                router.push('/');
+                                                router.refresh();
+                                                return 'Signed out successfully';
+                                            },
+                                            error: 'Failed to sign out',
+                                        });
                                     }}
                                 >
                                     Sign Out

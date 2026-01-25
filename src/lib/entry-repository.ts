@@ -67,7 +67,7 @@ export class SupabaseEntryRepository implements EntryRepository {
         const supabase: any = await this.getClient();
         const { data, error } = await supabase
             .from('entries')
-            .insert({
+            .upsert({
                 user_id: entry.userId,
                 date: entry.date,
                 content: entry.content,
@@ -75,7 +75,7 @@ export class SupabaseEntryRepository implements EntryRepository {
                 audio_notes: entry.audioNotes || [],
                 mood: entry.mood || null,
                 weather: entry.weather || null,
-            })
+            }, { onConflict: 'user_id, date' })
             .select()
             .single();
 
